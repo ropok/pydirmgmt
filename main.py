@@ -75,6 +75,6 @@ if __name__ == '__main__':
         main.wavOut(vt_name, args.input)
 
     # hilangin duplikasi
-    if args.task = "deldupe":
+    if args.task == "deldupe":
         vt_name = main.getVTName(args.input)
         main.delDupe(vt_name, args.input, args.output)
