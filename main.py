@@ -11,6 +11,7 @@ class Main():
         super(Main, self)
     
     def getVTName(self, path):
+        vt_name = []
         for root, dirs, files in os.walk(path):
             for dire in dirs:
                 # add special for directory name
