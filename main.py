@@ -27,8 +27,8 @@ class Main():
             for root, dirs, files in os.walk(path_vt):
                 for file in files:
                     if file[-4:] == '.wav':
-                        shutil.move(os.path.join(root, filename), os.path.join(path_vt, filename))
-                        print("moved", filename)
+                        shutil.move(os.path.join(root, file), os.path.join(path_vt, file))
+                        print("moved", file)
     
     def delDupe(self, vt_name, path_src, path_dest):
         # move duplicate files into other folder (not counted on qc)
