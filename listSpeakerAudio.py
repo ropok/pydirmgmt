@@ -103,7 +103,7 @@ if __name__ == '__main__':
     for vt_name in vt_names:
         path_vt = os.path.join(path, vt_name)
         username = vt_name
-        baris = len(main.wavList(path_vt))
+        baris = len(main.wavList(vt_name, path_vt))
         jam = main.wavDuration(path, vt_name)
         print("{} - {} - {}".format(username, baris, jam))
     # path = 'C:/Users/jalerse/Downloads/data_speaker'
