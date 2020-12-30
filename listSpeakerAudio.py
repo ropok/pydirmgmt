@@ -9,6 +9,7 @@ import os
 import pandas as pd
 import glob
 import collections
+import librosa
 
 class Main():
 
@@ -31,7 +32,7 @@ class Main():
         wav_names = []
         for root, dirs, files in os.walk(path):
             for file in files:
-                if file.startswith(vt_name) and file.endswith('.wav'):
+                if file.startswith(vt_name) and file.endswith('.wav') and not file.endswith(").wav"):
                     wav_names.append(file)
         return wav_names
 
@@ -54,36 +55,73 @@ class Main():
         wav_dict['jumlah baris'].append(wav_count)
         return wav_dict
         
-    # def writeDictXlsx(self, wav_dict):
-
-
-                
     # count .wav per vt_names (as directory), return wav count
     def wavCount(self, vt_path):
         count_wav = 0
         for root, dirs, files in os.walk(vt_path):
             for file in files:
-                if file.endswith('.wav'):
+                if file.endswith('.wav') and not file.endswith(").wav") and not file.endswith(").wav"):
                     count_wav += 1
         return count_wav
 
+    def fileLength(self, file_wav):
+        duration = librosa.get_duration(filename=file_wav)
+        return duration
+
+    def wavDuration(self, path, nama_vt):
+        duration = 0
+        duration_menit = 0
+        duration_jam = 0
+        jumlah_baris = 0
+        total_duration_jam = 0
+        total_duration_menit = 0
+        total_jumlah_baris = 0
+        for root, dirs, files in os.walk(path):
+            for index, filename in enumerate(files, start=1):
+                if filename.startswith(nama_vt) and filename.endswith(".wav") and not filename.endswith(").wav"):
+                    file_wav = root + "/" + filename
+                    try:
+                        # duration = librosa.get_duration(filename=file_wav)
+                        file_duration = librosa.get_duration(filename=file_wav)
+                        duration = duration + file_duration
+                        jumlah_baris += 1
+                    except:
+                        # print(filename+' error')
+                        pass
+        duration_jam = round(duration/3600, 2)
+        duration_menit = round(duration/60, 2)   
+        total_duration_menit += duration_menit   
+        total_duration_jam += duration_jam
+        return total_duration_jam
+
 if __name__ == '__main__':
-    path = 'C:/Users/jalerse/Downloads/data_speaker'
+    
+    path = '/media/server/MyPassport/STT/Arsip-Data-1800jam/dailycount-speaker/'
     main = Main()
-    vt_names = main.openDir(path)
-    # >> XLSX Writer
-    xlsx_file = "list_downloaded_speaker.xlsx"
-    writer = pd.ExcelWriter(xlsx_file, engine='xlsxwriter')
+    # >> Username - baris - jam
+    vt_names = ['yog104','mut139','deb111','apr109','ind145','indahp','pan142']
     for vt_name in vt_names:
-        wav_names = main.wavList(vt_name, path)
-        wav_dict = main.wavDict(wav_names)
-        count_dict = []
+        path_vt = os.path.join(path, vt_name)
+        username = vt_name
+        baris = len(main.wavList(path_vt))
+        jam = main.wavDuration(path, vt_name)
+        print("{} - {} - {}".format(username, baris, jam))
+    # path = 'C:/Users/jalerse/Downloads/data_speaker'
+    # main = Main()
+    # vt_names = main.openDir(path)
+    # # >> XLSX Writer
+    # xlsx_file = "list_downloaded_speaker.xlsx"
+    # writer = pd.ExcelWriter(xlsx_file, engine='xlsxwriter')
+    # for vt_name in vt_names:
+    #     wav_names = main.wavList(vt_name, path)
+    #     wav_dict = main.wavDict(wav_names)
+    #     count_dict = []
 
 
-        wav_excel = pd.DataFrame.from_dict(wav_dict, orient='index')
-        wav_excel = wav_excel.transpose()
-        wav_excel.to_excel(writer, sheet_name=vt_name)
-    writer.save()
+    #     wav_excel = pd.DataFrame.from_dict(wav_dict, orient='index')
+    #     wav_excel = wav_excel.transpose()
+    #     wav_excel.to_excel(writer, sheet_name=vt_name)
+    # writer.save()
 
     
     # print(vt_names, tr_names)
