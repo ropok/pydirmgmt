@@ -9,6 +9,7 @@ import os
 import pandas as pd
 import glob
 import collections
+import librosa
 
 class Main():
 
@@ -83,6 +84,45 @@ class Main():
                     count_wav += 1
         return count_wav
 
+    def fileLength(self, file_wav):
+        duration = librosa.get_duration(filename=file_wav)
+        return duration
+
+    def wavDuration(self, path_vt, vt_name):
+        duration = 0
+        duration_menit = 0
+        duration_jam = 0
+        jumlah_baris = 0
+        total_duration_jam = 0
+        total_duration_menit = 0
+        total_jumlah_baris = 0
+        # progress print per nama_vt
+        print("Processing:", vt_name)
+        for root, dirs, files in os.walk(path_vt):
+            for index, filename in enumerate(files, start=1):
+            #     # masukkan ke list dulu agar tidak duplikasi.
+            #     if filename.endswith(".wav") and nama_vt in root:
+            #         file_wav = os.path.join(root, filename)
+            #         list_audio_vt.append(filename)
+            # list_audio_vt = sorted(list(set(list_audio_vt)))
+            # for audio_file in list_audio_vt:
+                # print (os.path.join(root,audio_file))
+                # cek berdasarkan nama talent dan .wav
+                if filename.endswith(".wav"):
+                    file_wav = root + "/" + filename
+                    try:
+                        # duration = librosa.get_duration(filename=file_wav)
+                        file_duration = librosa.get_duration(filename=file_wav)
+                        duration = duration + file_duration
+                        jumlah_baris += 1
+                    except:
+                        print(filename+' error')
+        duration_jam = round(duration/3600, 2)
+        duration_menit = round(duration/60, 2)   
+        total_duration_menit += duration_menit   
+        total_duration_jam += duration_jam
+        return total_duration_jam
+
 
 if __name__ == '__main__':
     path = 'C:/Users/jalerse/Downloads/data_hp'
@@ -99,11 +139,14 @@ if __name__ == '__main__':
         talent_dict = {}
         count_dict = main.wavCount(path_vt)
         wav_names = main.wavList(path_vt)
+        wav_durasi = main.wavDuration(path_vt, vt_name)
         talent_dict['jumlah file'] = []
         talent_dict['jumlah file'].append(count_dict)
         talent_dict['file'] = []
         for wav in wav_names:
             talent_dict['file'].append(wav)
+        talent_dict['durasi (jam)'] = []
+        talent_dict['durasi (jam)'].append(wav_durasi)
 
         talent_excel = pd.DataFrame.from_dict(talent_dict, orient='index')
         talent_excel = talent_excel.transpose()
