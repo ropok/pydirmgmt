@@ -38,6 +38,8 @@ class Main():
     def wavDict(self, wav_names):
         wav_dict = {}
         col_names = []
+        wav_count = 0
+        wav_dict['jumlah baris'] = []
         for wav in wav_names:
             col_name = wav.split('_')[4]
             col_names.append(col_name)
@@ -48,6 +50,8 @@ class Main():
                 transcript = wav.split('_')[4]
                 if col == transcript:
                     wav_dict[col].append(wav)
+                    wav_count +=1
+        wav_dict['jumlah baris'].append(wav_count)
         return wav_dict
         
     # def writeDictXlsx(self, wav_dict):
@@ -56,24 +60,25 @@ class Main():
                 
     # count .wav per vt_names (as directory), return wav count
     def wavCount(self, vt_path):
-        # os.chdir(vt_name)
-        cnt = collections.Counter()
-        for filename in glob.glob(os.path.join(vt_path,"*.wav")):
-            name, ext = os.path.splitext(filename)
-            cnt[ext] += 1
-        # print(cnt[ext])
-        return cnt[ext]
+        count_wav = 0
+        for root, dirs, files in os.walk(vt_path):
+            for file in files:
+                if file.endswith('.wav'):
+                    count_wav += 1
+        return count_wav
 
 if __name__ == '__main__':
     path = 'C:/Users/jalerse/Downloads/data_speaker'
     main = Main()
     vt_names = main.openDir(path)
     # >> XLSX Writer
-    xlsx_file = "output.xlsx"
+    xlsx_file = "list_downloaded_speaker.xlsx"
     writer = pd.ExcelWriter(xlsx_file, engine='xlsxwriter')
     for vt_name in vt_names:
         wav_names = main.wavList(vt_name, path)
         wav_dict = main.wavDict(wav_names)
+        count_dict = []
+
 
         wav_excel = pd.DataFrame.from_dict(wav_dict, orient='index')
         wav_excel = wav_excel.transpose()
