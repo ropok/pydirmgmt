@@ -80,7 +80,7 @@ class Main():
         count_wav = 0
         for root, dirs, files in os.walk(vt_path):
             for file in files:
-                if file.endswith('.wav'):
+                if file.endswith('.wav') and not file.endswith(").wav"):
                     count_wav += 1
         return count_wav
 
@@ -88,7 +88,7 @@ class Main():
         duration = librosa.get_duration(filename=file_wav)
         return duration
 
-    def wavDuration(self, path_vt, vt_name):
+    def wavDuration(self, path_vt):
         duration = 0
         duration_menit = 0
         duration_jam = 0
@@ -97,18 +97,10 @@ class Main():
         total_duration_menit = 0
         total_jumlah_baris = 0
         # progress print per nama_vt
-        print("Processing:", vt_name)
+        # print("Processing:", vt_name)
         for root, dirs, files in os.walk(path_vt):
             for index, filename in enumerate(files, start=1):
-            #     # masukkan ke list dulu agar tidak duplikasi.
-            #     if filename.endswith(".wav") and nama_vt in root:
-            #         file_wav = os.path.join(root, filename)
-            #         list_audio_vt.append(filename)
-            # list_audio_vt = sorted(list(set(list_audio_vt)))
-            # for audio_file in list_audio_vt:
-                # print (os.path.join(root,audio_file))
-                # cek berdasarkan nama talent dan .wav
-                if filename.endswith(".wav"):
+                if filename.endswith(".wav") and not filename.endswith(").wav"):
                     file_wav = root + "/" + filename
                     try:
                         # duration = librosa.get_duration(filename=file_wav)
@@ -125,84 +117,40 @@ class Main():
 
 
 if __name__ == '__main__':
-    path = 'C:/Users/jalerse/Downloads/data_hp'
+    path = '/media/server/MyPassport/STT/Arsip-Data-1800jam/dailycount-handphone/'
     main = Main()
-    # >> XLSX Writer
-    xlsx_file = "handphone_count.xlsx"
-    writer = pd.ExcelWriter(xlsx_file, engine='xlsxwriter')
-    vt_names = main.openDir(path)
-    # dict_counts = pd.DataFrame(columns=['username', 'jumlah file'])
-    # dict_counts = {}
+    # >> Username - baris - jam
+    vt_names = ['eli097','rad099','Ilh032','des146','ria100','lus167','tya137','sil077','rio148','ind033','sha075','ikm136','sil077','ell102','dhe016','ren065','lai161','nia055','rad099','rat096']
     for vt_name in vt_names:
         path_vt = os.path.join(path, vt_name)
-        # > masuk ke sheet hitung
-        talent_dict = {}
-        count_dict = main.wavCount(path_vt)
-        wav_names = main.wavList(path_vt)
-        wav_durasi = main.wavDuration(path_vt, vt_name)
-        talent_dict['jumlah file'] = []
-        talent_dict['jumlah file'].append(count_dict)
-        talent_dict['file'] = []
-        for wav in wav_names:
-            talent_dict['file'].append(wav)
-        talent_dict['durasi (jam)'] = []
-        talent_dict['durasi (jam)'].append(wav_durasi)
+        username = vt_name
+        baris = main.wavCount(path_vt)
+        jam = main.wavDuration(path_vt)
+        print("{} - {} - {}".format(username, baris, jam))
 
-        talent_excel = pd.DataFrame.from_dict(talent_dict, orient='index')
-        talent_excel = talent_excel.transpose()
-        talent_excel.to_excel(writer, sheet_name=vt_name)
-    writer.save()
-        # count_dict = pd.DataFrame(count_dict)
-        # talent_dict = pd.DataFrame.from_dict(count_dict, orient='index')
-        # talent_dict = talent_dict.transpose()
-        # talent_dict.to_excel(writer, sheet_name="")
-        # dict_count = {'username':vt_name, 'jumlah file':wav_count}
-        # dict_counts = dict_counts.update(dict_count)
- 
-    # path_vt = os.path.join(path, vt_names[0])
-    # wav_names = main.wavList(path_vt)
-    
-
-    # vt_names = main.openDir(path)
-    # >> XLSX Writer
-    # xlsx_file = "output.xlsx"
+        
+    # # >> XLSX Writer
+    # xlsx_file = "handphone_count.xlsx"
     # writer = pd.ExcelWriter(xlsx_file, engine='xlsxwriter')
-    # for vt_name in vt_names:
-    #     wav_names = main.wavList(vt_name, path)
-    #     wav_dict = main.wavDict(wav_names)
-
-    #     wav_excel = pd.DataFrame.from_dict(wav_dict, orient='index')
-    #     wav_excel = wav_excel.transpose()
-    #     wav_excel.to_excel(writer, sheet_name=vt_name)
-    # writer.save()
-
-    
-    # print(vt_names, tr_names)
-    # vt_name = "drp145_m_20201223_kumpulanistilah10_surabaya"
-    # main.wavList(os.path.join(path, vt_name))
-
-    # excel writer init
-    # writer = pd.ExcelWriter(xlsx_file, engine='xlsxwriter')
-    # output_data = pd.DataFrame(columns = ['no', 'nama folder', 'nama transcript', 'jumlah audio'])
-    # main = Main()
     # vt_names = main.openDir(path)
-
+    # # dict_counts = pd.DataFrame(columns=['username', 'jumlah file'])
+    # # dict_counts = {}
     # for vt_name in vt_names:
-    #     # for every vt_name
-    #     print(vt_name)
-    #     index = 0
-    #     for root, dirs, files in os.walk(path):
-    #         for dire in dirs:
-    #             if dire.startswith(vt_name): # masuk folder berdasarkan nama username
-    #                 # print(dire)
-    # #                 # here we write the index, directory name, transcript name, and count
-    #                 index += 1
-    #                 directory_name = dire
-    #                 transcript_name = dire.split('_')[3]
-    #                 wav_count = main.wavList(os.path.join(path, dire)) # hitung .wav yang ada
-    #                 dict_data = {'no':index, 'nama folder':directory_name, 'nama transcript':transcript_name, 'jumlah audio':wav_count}
-    #                 # print(dict_data)
-    #                 output_data = output_data.append(dict_data, ignore_index=True)
-    #                 # print(output_data)
-    #     output_data.to_excel(writer, sheet_name=vt_name, index=False)
+    #     path_vt = os.path.join(path, vt_name)
+    #     # > masuk ke sheet hitung
+    #     talent_dict = {}
+    #     count_dict = main.wavCount(path_vt)
+    #     wav_names = main.wavList(path_vt)
+    #     wav_durasi = main.wavDuration(path_vt, vt_name)
+    #     talent_dict['jumlah file'] = []
+    #     talent_dict['jumlah file'].append(count_dict)
+    #     talent_dict['file'] = []
+    #     for wav in wav_names:
+    #         talent_dict['file'].append(wav)
+    #     talent_dict['durasi (jam)'] = []
+    #     talent_dict['durasi (jam)'].append(wav_durasi)
+
+    #     talent_excel = pd.DataFrame.from_dict(talent_dict, orient='index')
+    #     talent_excel = talent_excel.transpose()
+    #     talent_excel.to_excel(writer, sheet_name=vt_name)
     # writer.save()
