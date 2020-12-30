@@ -67,8 +67,11 @@ class Main():
         # count_dict = {}
         cnt = collections.Counter()
         for filename in glob.glob(os.path.join(vt_path,"*.wav")):
-            name, ext = os.path.splitext(filename)
-            cnt[ext] += 1
+            try:
+                name, ext = os.path.splitext(filename)
+                cnt[ext] += 1
+            except:
+                print("no file exist")
         # count_dict['username'] = vt_name
         # count_dict['jumlah file'] = cnt[ext]
         # print(cnt[ext])
