@@ -118,7 +118,7 @@ class Main():
 
 if __name__ == '__main__':
     # path = '/media/server/MyPassport/STT/Arsip-Data-1800jam/dailycount-handphone/'
-    path = '/Documents/kendala_hp/'
+    path = '~/Documents/kendala_hp/'
     main = Main()
     # >> Username - baris - jam
     vt_names = ['eli097','ilh032','des146','ria100','lus167','tya137','sil077','rio148','ind033','sha075','ikm136','sil077','ell102','dhe016','ren065','lai161','nia055','rad099','rat096']
