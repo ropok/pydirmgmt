@@ -126,8 +126,9 @@ if __name__ == '__main__':
         path_vt = os.path.join(path, vt_name)
         username = vt_name
         baris = main.wavCount(path_vt)
-        jam = main.wavDuration(path_vt)
-        print("{} - {} - {}".format(username, baris, jam))
+        # jam = main.wavDuration(path_vt)
+        # print("{} - {} - {}".format(username, baris, jam))
+        print("{} - {}".format(username, baris))
 
         
     # # >> XLSX Writer
