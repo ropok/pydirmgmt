@@ -118,19 +118,26 @@ class Main():
 
 if __name__ == '__main__':
     # path = '/media/server/MyPassport/STT/Arsip-Data-1800jam/dailycount-handphone/'
-    path = '~/Documents/kendala_hp/'
+    # path = r'D:\Data Perekaman STT 1800 jam\solving_hp'
+    path = '/media/server/MyPassport/STT/Arsip-Data-1800jam/solving_hp/count'
     main = Main()
     # >> Username - baris - jam
-    vt_names = ['eli097','ilh032','des146','ria100','lus167','tya137','sil077','rio148','ind033','sha075','ikm136','sil077','ell102','dhe016','ren065','lai161','nia055','rad099','rat096']
+    # vt_names = ['eli097','ilh032','des146','ria100','lus167','tya137','sil077','rio148','ind033','sha075','ikm136','sil077','ell102','dhe016','ren065','lai161','nia055','rad099','rat096']
     # vt_names = ['ilh032', 'rat096']
-    for vt_name in vt_names:
-        path_vt = os.path.join(path, vt_name)
-        username = vt_name
-        baris = main.wavCount(path_vt)
-        # jam = main.wavDuration(path_vt)
-        # print("{} - {} - {}".format(username, baris, jam))
-        print("{} - {}".format(username, baris))
-
+    # vt_names = main.openDir(path)
+    # for vt_name in vt_names:
+    #     path_vt = os.path.join(path, vt_name)
+    #     username = vt_name
+    #     baris = main.wavCount(path_vt)
+    #     # jam = main.wavDuration(path_vt)
+    #     # print("{} - {} - {}".format(username, baris, jam))
+    #     print("{} - {}".format(username, baris))
+            # path_vt = os.path.join(path, vt_name)
+    # username = vt_name
+    baris = main.wavCount(path)
+    jam = main.wavDuration(path)
+    print("\n{} file\n{} jam".format(baris, jam))
+    # print("{} - {}".format(username, baris))
         
     # # >> XLSX Writer
     # xlsx_file = "handphone_count.xlsx"
