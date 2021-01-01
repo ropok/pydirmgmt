@@ -32,8 +32,8 @@ class Main():
         wav_names = []
         for root, dirs, files in os.walk(path):
             for file in files:
-                if file.startswith(vt_name) and file.endswith('.wav'):
-                # if file.startswith(vt_name) and file.endswith('.wav') and not file.endswith(").wav"):
+                # if file.startswith(vt_name) and file.endswith('.wav'):
+                if file.startswith(vt_name) and file.endswith('.wav') and not file.endswith(").wav"):
                     wav_names.append(file)
         return wav_names
 
@@ -97,18 +97,20 @@ class Main():
 
 if __name__ == '__main__':
     
-    path = '/media/server/MyPassport/STT/Arsip-Data-1800jam/dailycount-speaker/'
+    # path = r'C:\Users\jalerse\Downloads\solving_speaker'
+    path = '~/Documents/solving_speaker/count'
     main = Main()
     # >> Username - baris - jam
     # vt_names = main.openDir(path)
-    vt_names = ['yog104','mut139','deb111','apr109','ind145','indahp','pan142']
+    vt_names = ['har141','san141']
     for vt_name in vt_names:
         path_vt = os.path.join(path, vt_name)
         username = vt_name
         baris = len(main.wavList(vt_name, path))
         # baris = len(main.wavList(vt_name, path_vt))
         jam = main.wavDuration(path, vt_name)
-        print("{} - {} - {}".format(username, baris, jam))
+        print("{}\n{} file\n{} jam".format(username, baris, jam))
+        # print("{} - {}".format(username, baris))
     # path = 'C:/Users/jalerse/Downloads/data_speaker'
     # main = Main()
     # vt_names = main.openDir(path)
