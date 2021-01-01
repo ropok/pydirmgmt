@@ -98,7 +98,7 @@ class Main():
 if __name__ == '__main__':
     
     # path = r'C:\Users\jalerse\Downloads\solving_speaker'
-    path = '~/Documents/solving_speaker/count'
+    path = '/media/server/MyPassport/STT/Arsip-Data-1800jam/solving_speaker/count'
     main = Main()
     # >> Username - baris - jam
     # vt_names = main.openDir(path)
